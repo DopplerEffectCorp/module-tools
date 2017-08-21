@@ -13,7 +13,8 @@ let input = {
   id2: {
     anyKey2: 'second'
   }
-}
+};
+
 objectToArray(input, '$key');
 
 Output => [{

@@ -24,42 +24,43 @@ export class DeToolsService {
             if (ret && string) {
                 ret = ret.concat('-');
             }
-            ret = ret.concat(removeAccents(string));
+            ret = ret.concat(this.removeAccents(string));
         });
         if (randomStringLength) {
-            ret = ret.concat('-').concat(randomString(randomStringLength));
+            ret = ret.concat('-').concat(this.randomString(randomStringLength));
         }
         return ret;
+    }
 
-        function randomString(length: number) {
-            const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-            let randomString = '';
+    randomString(length: number) {
+        const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        let randomString = '';
 
-            for (let i = 0; i < length; i++) {
-                randomString += possible.charAt(Math.floor(Math.random() * possible.length));
-            }
-            return randomString;
+        for (let i = 0; i < length; i++) {
+            randomString += possible.charAt(Math.floor(Math.random() * possible.length));
         }
+        return randomString;
+    }
 
-        function removeAccents(str: string): string {
-            const accent = [
-                /[\300-\306]/g, /[\340-\346]/g, // A, a
-                /[\310-\313]/g, /[\350-\353]/g, // E, e
-                /[\314-\317]/g, /[\354-\357]/g, // I, i
-                /[\322-\330]/g, /[\362-\370]/g, // O, o
-                /[\331-\334]/g, /[\371-\374]/g, // U, u
-                /[\321]/g, /[\361]/g, // N, n
-                /[\307]/g, /[\347]/g, // C, c
-            ];
-            const noAccent = ['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u', 'N', 'n', 'C', 'c'];
 
-            for (let i = 0; i < accent.length; i++) {
-                str = str.replace(accent[i], noAccent[i]);
-            }
-            str = str.trim().replace(/[\/\\\s]/g, '-');
-            str = str.replace(/--+/g, '-');
-            return str;
+    removeAccents(str: string): string {
+        const accent = [
+            /[\300-\306]/g, /[\340-\346]/g, // A, a
+            /[\310-\313]/g, /[\350-\353]/g, // E, e
+            /[\314-\317]/g, /[\354-\357]/g, // I, i
+            /[\322-\330]/g, /[\362-\370]/g, // O, o
+            /[\331-\334]/g, /[\371-\374]/g, // U, u
+            /[\321]/g, /[\361]/g, // N, n
+            /[\307]/g, /[\347]/g, // C, c
+        ];
+        const noAccent = ['A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u', 'N', 'n', 'C', 'c'];
+
+        for (let i = 0; i < accent.length; i++) {
+            str = str.replace(accent[i], noAccent[i]);
         }
+        str = str.trim().replace(/[\/\\\s]/g, '-');
+        str = str.replace(/--+/g, '-');
+        return str;
     }
 
     deleteUndefined(elem: any) {
@@ -67,7 +68,7 @@ export class DeToolsService {
             elem.map((value, i) => {
                 if (value instanceof Object || value instanceof Array) {
                     this.deleteUndefined(value);
-                } else if (value === null || value === undefined) {
+                } else if (!value && value !== false) {
                     delete elem[i];
                 }
             });
@@ -75,7 +76,7 @@ export class DeToolsService {
             Object.keys(elem).map((key) => {
                 if (elem[key] instanceof Object || elem[key] instanceof Array) {
                     this.deleteUndefined(elem[key]);
-                } else if (elem[key] === null || elem[key] === undefined) {
+                } else if (!elem[key] && elem[key] !== false) {
                     delete elem[key];
                 }
             });

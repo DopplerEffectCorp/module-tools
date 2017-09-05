@@ -29,7 +29,7 @@ export class DeToolsService {
         if (randomStringLength) {
             ret = ret.concat('-').concat(this.randomString(randomStringLength));
         }
-        return ret;
+        return encodeURIComponent(ret);
     }
 
     randomString(length: number) {
@@ -41,7 +41,6 @@ export class DeToolsService {
         }
         return randomString;
     }
-
 
     removeAccents(str: string): string {
         const accent = [

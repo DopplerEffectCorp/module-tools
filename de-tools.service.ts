@@ -29,6 +29,7 @@ export class DeToolsService {
         if (randomStringLength) {
             ret = ret.concat('-').concat(this.randomString(randomStringLength));
         }
+        ret = ret.replace(/[#$[\].]/g, '-'); // Firebase keys can't contain
         return encodeURIComponent(ret);
     }
 
